@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DDR Synth</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.js"></script>
+  <script src="https://unpkg.com/tone"></script>
+  <script src="https://unpkg.com/hydra-synth"></script>
+
+  <style>
+    body {
+        margin: 0;
+        overflow: hidden;
+    }
+    canvas {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    #disco-canvas {
+        z-index: 1;
+        top: -80%;
+    }
+    #ddr-canvas {
+        z-index: 0;
+        pointer-events: none; /* DDR handles keyboard only */
+    }
+</style>
+
+</head>
+
+<body>
+    <canvas id="hydraCanvas"></canvas>
+    <script src="./disco.js"></script>
+    <script type="module" src="./ddr.js"></script>
+</body>
+
+</html>
