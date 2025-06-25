@@ -25,6 +25,7 @@ class NoteObject extends ArrowObject {
 
             for (let r = this.size * 0.7; r > 0; r -= 12) {
                 let alpha = map(r, this.size * 0.7, 0, 0, 25); 
+                // let alpha = 255;
                 fill(this.noteColor[0], this.noteColor[1], this.noteColor[2], alpha);  
                 ellipse(0, 0, r, r * 1.3);     
             }

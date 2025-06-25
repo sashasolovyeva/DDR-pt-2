@@ -25,12 +25,6 @@ class ArrowObject {
 
     show() {
         arrowVars.drawArrow(this.x, this.y, this.angle, this.size, this.stroke, this.color);
-        // push();
-        //     translate(this.x, this.y);
-        //     rotate(this.angle);
-        //     arrowVars.getArrowImage().resize(this.size, 0);
-        //     image(this.image, 0, 0);
-        // pop();
     }
 
     changeColor(note) {

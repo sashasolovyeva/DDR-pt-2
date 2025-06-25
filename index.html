@@ -26,6 +26,12 @@
     #ddr-canvas {
         z-index: 0;
         pointer-events: none; /* DDR handles keyboard only */
+        height: 100%;
+        opacity: 82%;
+    }
+    #hydraCanvas {
+        z-index: -1;
+        /* opacity: 50%; */
     }
 </style>
 
@@ -33,8 +39,9 @@
 
 <body>
     <canvas id="hydraCanvas"></canvas>
-    <script src="./disco.js"></script>
     <script type="module" src="./ddr.js"></script>
+    <script src="./hydra.js"></script>
+    <script src="./disco.js"></script>
 </body>
 
 </html>

@@ -9,6 +9,7 @@ class SynthMode {
 
         this.synthType = synthType;
         this.synthObj = new Tone.Synth({
+            volume: -2,
             oscillator: { type: this.synthType },
             envelope: {
                 attack: 0.1,

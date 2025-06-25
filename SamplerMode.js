@@ -15,6 +15,7 @@ class SamplerMode {
         this.synthObj = new Tone.Sampler({
             urls: urlMap,
             baseUrl: `samples/${modeName}-`,
+            volume: +5,
             envelope: {
                 attack: 0.05,
                 release: 0.5,

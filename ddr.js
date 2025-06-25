@@ -3,42 +3,42 @@ import NoteObject from "./NoteObject.js";
 import { yStartPos } from "./arrow-variables.js";
 import { modes } from "./music-exports.js";
 
-let arrowsArray = [];
-
 let keyCodes = [37, 40, 38, 39];
 
 let keyMap = {};
 let currentNote = "";
 let currentMode = "";
-
-let hydra;
-let hc;
-let osc = [];
+let systemMessage = "";
 
 window.setup = function () {
+    // Add a click handler to start the audio
+    document.body.addEventListener('click', () => {
+        Tone.start();
+        console.log('audio is ready');
+    });
+
+    const player = new Tone.Player("samples/ddrr-beat.wav").toDestination();
+    player.autostart = true;
+    player.loop = true;
+    player.fadeIn = 2;
+    player.fadeOut = 2;
+    player.volume.value = -2;
+
     let p5Canvas = createCanvas(windowWidth + 1, windowHeight + 1, P2D);
     p5Canvas.id("ddr-canvas");
     imageMode(CENTER);
     ellipseMode(CENTER);
     textAlign(CENTER, CENTER);
-    textSize(16);
+    textSize(20);
     textFont('Courier New');
     angleMode(DEGREES);
     // frameRate(60);
 
-    // hydra setup
-    let hydraCanvas = document.getElementById("hydraCanvas");
-    hydraCanvas.width = windowWidth;
-    hydraCanvas.height = windowHeight;
-    hc = select("#hydraCanvas");
-    hc.hide();
-    hydra = new Hydra({ canvas: hydraCanvas, detectAudio: false });
-    hydra.synth.s0.init({src: p5Canvas.canvas});
-    hydra.synth.osc(10, .1, () => 3 * mouseX / windowWidth).diff(s0).rotate(.1, .1).scale(() => 1 + 0.1 * (mouseY / windowHeight)).kaleid().out();
+    const availableModes = shuffle([...modes]);
 
     for(let i = 0; i < keyCodes.length; i++) {
 
-        let pickMode = random(modes);
+        let pickMode = availableModes[i];
 
         let arrow = new ArrowObject(i, pickMode.modeName);
 
@@ -54,19 +54,21 @@ window.setup = function () {
 
         keyMap[keyCodes[i]] = { arrow, notesArray };
     }
+
+    setInterval(chooseNewModes, 45000);
 }
 
 window.draw = function () {
-
-    // image(hc, width / 2, height / 2);
-
-    noStroke();
+    console.log(millis());
+    // if(frameCount % 15 == 0) {
+    //     clear();
+    // }
     fill(5, 30);
     rect(0, 0, width, height);
 
     blendMode(ADD);   
     
-    console.log(frameRate())
+    // console.log(frameRate());
 
     for (let i = 0; i < keyCodes.length; i++) {
         let currentArray = keyMap[keyCodes[i]].notesArray;
@@ -87,6 +89,12 @@ window.draw = function () {
     fill(255);
     text("Note Played: " + currentNote, width-150, 100);
     text("Mode Played: " + currentMode, width-150, 150);
+
+    if (systemMessage) {
+        textSize(32);
+        text(systemMessage, width / 2, height / 2 + 100);
+        textSize(20);
+    }
 
     blendMode(BLEND);
 }
@@ -131,10 +139,25 @@ window.keyReleased = function() {
 }
 
 function chooseNewModes () {
+    systemMessage = "Choosing new modes...";
 
-    if(arrowsArray && arrowsArray.length != 0) {
-        for(let i = 0; i < 4; i++) {
-            arrowsArray[i].mode = random(modes);
+    setTimeout(() => {
+        const shuffledModes = shuffle([...modes]);
+        for(let i = 0; i < keyCodes.length; i++) {
+            const keyCode = keyCodes[i];
+            const { arrow, notesArray } = keyMap[keyCode];
+            const newMode = shuffledModes[i];
+
+            arrow.mode = newMode.modeName;
+            
+            notesArray.length = 0; // Clear existing notes
+            let prevNotePos = yStartPos;
+
+            for(let j = 0; j < newMode.notes.length; j++) {
+                notesArray.push(new NoteObject(i, newMode.modeName, newMode.synthObj, newMode.notes[j], prevNotePos));
+                prevNotePos = notesArray[j].y;
+            }
         }
-    }
+        systemMessage = "";
+    }, 2000);
 }

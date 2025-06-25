@@ -1,6 +1,7 @@
 export const notes = ["A3", "B3b", "C4", "D4", "E4", "F4", "G4"];
 export const altPattern1 = ["C4", "D4", "E4", "F4", "G4", "A4", "C5"];
 export const altPattern2 = ["F4", "G4", "A4", "B4b", "C5", "D5", "E5", "F5"];
+export const altPattern3 = ["F4", "G4", "A4", "B4b", "C5", "D5", "E5"];
 
 export const noteToColorMap = {
     "A3": [180, 100, 255],    // purple
